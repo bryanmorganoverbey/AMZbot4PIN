@@ -1,7 +1,9 @@
 import pyautogui
 import time
 # Infinite while loop
+image_num = 0
 while(True):
+    image_num += 1
     #Grab scroll bar and move down a row
     pyautogui.scroll(-318)  # scroll down 318 pixels
     #move mouse to hover over first image in row.
@@ -15,7 +17,18 @@ while(True):
         #pyautogui.click(or whatever)
         # use snipping tool to create and save image
             #scroll down to snipping tool on taskbar
-        pyautogui.moveTo(850,1000)
+        pyautogui.moveTo(510, 880)
+            #click new snip on snipping tool
+        pyautogui.moveTo(789,130)
+            #hover over top left pixel of large image
+        pyautogui.moveTo(350,250)
+            #click and drag to cover full image
+        pyautogui.dragTo(716, 574, button='left')
+            #save image
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('s')
+            #name image
+        pyautogui.typewrite(str(image_num))
         #click on large image
 
 

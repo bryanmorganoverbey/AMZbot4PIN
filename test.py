@@ -1,2 +1,4 @@
 import pyautogui
-pyautogui.moveTo(510, 880)
+while(True):
+
+    print(pyautogui.position())
