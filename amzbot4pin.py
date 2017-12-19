@@ -18,17 +18,24 @@ while(True):
         # use snipping tool to create and save image
             #scroll down to snipping tool on taskbar
         pyautogui.moveTo(510, 880)
+        pyautogui.click()
             #click new snip on snipping tool
-        pyautogui.moveTo(789,130)
+        pyautogui.moveTo(334,140)
+        pyautogui.click()
             #hover over top left pixel of large image
-        pyautogui.moveTo(350,250)
+        pyautogui.moveTo(376,257)
             #click and drag to cover full image
-        pyautogui.dragTo(716, 574, button='left')
+        pyautogui.dragTo(675, 555, button='left')
             #save image
         pyautogui.keyDown('ctrl')
         pyautogui.press('s')
+        pyautogui.keyUp('ctrl')
             #name image
         pyautogui.typewrite(str(image_num))
+        pyautogui.press('enter')
+            #minimize snipping tool
+        pyautogui.keyDown('windows')
+        pyautogui.press('down')
         #click on large image
 
 
