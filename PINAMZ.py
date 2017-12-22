@@ -2,13 +2,18 @@ import pyautogui
 import time
 import win32clipboard as clip
 import bs4 as bs
-import urllib.request
-
+from urllib.request import FancyURLopener
 link_list = [0,0,0]
+
 
 def run_bs4(afl_link):
     try:
-        page = urllib.request.urlopen(afl_link).read()
+
+        class MyOpener(FancyURLopener):
+            version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
+
+        myopener = MyOpener()
+        page = myopener.open(afl_link).read()
     except:
         return "Must Have!"
     soup = bs.BeautifulSoup(page, 'lxml')
@@ -36,6 +41,7 @@ def check_if_slot_is_link():
     else:
         return False
 
+
 def renew_state():
     # close tab
     pyautogui.keyDown('ctrl')
@@ -44,6 +50,7 @@ def renew_state():
     # close big image of previous item
     pyautogui.press('esc')
     pyautogui.moveTo(773, 235, duration=0.5)
+
 
 def run_algorithm():
     skip_state = False
@@ -64,12 +71,12 @@ def run_algorithm():
     time.sleep(4)
     pyautogui.moveTo(283, 13, duration=1)
     pyautogui.click()
-    time.sleep(3)
+    time.sleep(4)
     # Grab affiliate link text
     pyautogui.moveTo(186, 90, duration=1)
-    time.sleep(1)
-    pyautogui.click()
-    time.sleep(1)
+    time.sleep(5)
+    pyautogui.doubleClick()
+    time.sleep(3)
     pyautogui.keyDown('ctrl')
     pyautogui.press('c')
     pyautogui.keyUp('ctrl')
@@ -77,8 +84,18 @@ def run_algorithm():
     clip.OpenClipboard()
     afl_link = clip.GetClipboardData()
     clip.CloseClipboard()
-    #check if affiliate link is one of last 3 used links
-    if afl_link in link_list:
+    #copy part link
+    pyautogui.moveTo(361,45)
+    pyautogui.dragTo(443,45,duration=1)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('c')
+    pyautogui.keyUp('ctrl')
+    #copy from clipboard to variable
+    clip.OpenClipboard()
+    part_link = clip.GetClipboardData()
+    clip.CloseClipboard()
+    #check if part of link is one of last 3 used links
+    if part_link in link_list:
         renew_state()
         pyautogui.scroll(-318)  # scroll down 318 pixels
         skip_state = True
@@ -86,7 +103,8 @@ def run_algorithm():
     else:
         link_list[0] = link_list[1]
         link_list[1] = link_list[2]
-        link_list[2] = afl_link
+        link_list[2] = part_link
+        print(link_list)
     #Get text desciption of this item
     description = run_bs4(afl_link)
     # close tab
