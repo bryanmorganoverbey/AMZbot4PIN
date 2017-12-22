@@ -84,6 +84,8 @@ def run_algorithm():
     clip.OpenClipboard()
     afl_link = clip.GetClipboardData()
     clip.CloseClipboard()
+    if "http" not in afl_link:
+        afl_link = "www.kiitri.com"
     #copy part link
     pyautogui.moveTo(361,45)
     pyautogui.dragTo(443,45,duration=1)
