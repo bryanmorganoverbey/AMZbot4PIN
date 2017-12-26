@@ -28,6 +28,9 @@ def run_bs4(afl_link):
 def check_if_slot_is_link():
     #give time for page to fully load so it keeps cached data on how much scroll item page contained
     time.sleep(bottleneck)
+    #move cursor to where thenew tab would be (or ghost tab is not) and click that location to open the tab
+    pyautogui.moveTo(534,11, duration=1)
+    pyautogui.click()
     #move cursor to /shop/ in address bar
     pyautogui.moveTo(386,47,duration=0.5)
     pyautogui.dragTo(416,47, duration = 0.5)
@@ -39,6 +42,11 @@ def check_if_slot_is_link():
     copied = clip.GetClipboardData()
     clip.CloseClipboard()
     if(copied == 'shop'):
+        #close the tab
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('w')
+        pyautogui.press('pgup')
+        pyautogui.keyUp('ctrl')
         return True
     else:
         return False
@@ -177,16 +185,12 @@ while True:
     while slot<=5:
         pyautogui.moveTo(150+ (slot-1)*255, 250, duration=0.5)
         #click image corresponding to this slot.
-        pyautogui.doubleClick()
+        pyautogui.mouseDown()
+        time.sleep(0.6)
+        pyautogui.mouseUp()
         time.sleep(0.5)
-        if check_if_slot_is_link():
+        if check_if_slot_is_link(): #move mouse to where new tab would open and see if theres a tab there.
             slot +=1
-            #go back to prev page (navagate back from link page)
-            pyautogui.moveTo(17, 44, duration = 0.5)
-            pyautogui.click()
-            time.sleep(3.5)
-            pyautogui.moveTo(773, 235, duration=0.2)
-
         else:
             if run_algorithm():
                 slot = 0

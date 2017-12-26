@@ -4,7 +4,7 @@ import time
 import bs4 as bs
 import urllib.request
 from urllib.request import FancyURLopener
-
+'''
 afl_link = "http://amzn.to/2BgFhiY"
 def run_bs4(afl_link):
 
@@ -31,7 +31,7 @@ while(True):
 
     print(pyautogui.position())
 
-'''
+
 '''
 pyautogui.moveTo(795, 128)
 pyautogui.click()
