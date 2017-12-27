@@ -24,14 +24,14 @@ def run_bs4(afl_link):
 
 print(run_bs4(afl_link))
 '''
-
+'''
 image_num = 1
 
 while(True):
 
     print(pyautogui.position())
 
-
+'''
 '''
 pyautogui.moveTo(795, 128)
 pyautogui.click()
@@ -79,3 +79,4 @@ afl_link ='http://amzn.to/2BusxJx'
 if afl_link in link_list:
     print("GOT HERE")
 '''
+pyautogui.moveTo(396,47,duration=0.5)

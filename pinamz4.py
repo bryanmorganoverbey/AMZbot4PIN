@@ -3,26 +3,24 @@ import time
 import win32clipboard as clip
 import bs4 as bs
 from urllib.request import FancyURLopener
-link_list = [0,0,0]
-bottleneck = 5
+
+bottleneck = 2
 
 def run_bs4(afl_link):
     try:
-
         class MyOpener(FancyURLopener):
             version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
-
         myopener = MyOpener()
         page = myopener.open(afl_link).read()
+        soup = bs.BeautifulSoup(page, 'lxml')
+        thing = str(soup.find_all(id="productTitle")[0])
+        thing2 = thing.split(">")[1]
+        thing3 = thing2.split("<")[0]
+        thing4 = thing3.lstrip()
+        thing5 = thing4.rstrip()
+        return thing5
     except:
         return "Must Have!"
-    soup = bs.BeautifulSoup(page, 'lxml')
-    thing = str(soup.find_all(id="productTitle")[0])
-    thing2 = thing.split(">")[1]
-    thing3 = thing2.split("<")[0]
-    thing4 = thing3.lstrip()
-    thing5 = thing4.rstrip()
-    return thing5
 
 
 def check_if_slot_is_link():
@@ -50,16 +48,6 @@ def check_if_slot_is_link():
         return True
     else:
         return False
-
-
-def renew_state():
-    # close tab
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('w')
-    pyautogui.keyUp('ctrl')
-    # close big image of previous item
-    pyautogui.press('esc')
-    pyautogui.moveTo(773, 235, duration=0.5)
 
 
 def run_algorithm():
@@ -96,27 +84,8 @@ def run_algorithm():
     clip.CloseClipboard()
     if "http" not in afl_link:
         afl_link = "www.kiitri.com"
-    #copy part link
-    pyautogui.moveTo(361,45)
-    pyautogui.dragTo(443,45,duration=1)
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('c')
-    pyautogui.keyUp('ctrl')
-    #copy from clipboard to variable
-    clip.OpenClipboard()
-    part_link = clip.GetClipboardData()
-    clip.CloseClipboard()
-    #check if part of link is one of last 3 used links
-    if part_link in link_list:
-        renew_state()
-        pyautogui.scroll(-318)  # scroll down 318 pixels
-        skip_state = True
-        return skip_state
-    else:
-        link_list[0] = link_list[1]
-        link_list[1] = link_list[2]
-        link_list[2] = part_link
-        print(link_list)
+
+
     #Get text desciption of this item
     description = run_bs4(afl_link)
     # close tab
@@ -175,7 +144,6 @@ def run_algorithm():
     # close big image of previous item
     pyautogui.press('esc')
     pyautogui.moveTo(773, 235, duration=0.5)
-    return skip_state
 
 
 time.sleep(5)
@@ -192,10 +160,10 @@ while True:
         if check_if_slot_is_link(): #move mouse to where new tab would open and see if theres a tab there.
             slot +=1
         else:
-            if run_algorithm():
-                slot = 0
+            run_algorithm()
         slot +=1
         image_num +=1
     #Grab scroll bar and move down a row
+    pyautogui.moveTo(432, 525, duration=0.2) #move mouse to good position
     time.sleep(2)
     pyautogui.scroll(-318)  # scroll down 318 pixels
